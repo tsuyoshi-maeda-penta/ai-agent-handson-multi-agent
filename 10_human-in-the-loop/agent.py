@@ -44,7 +44,7 @@ class HumanApprovalInput(BaseModel):
 
 # モデルの初期化
 model = Gemini(
-    model="gemini-2.5-flash",
+    model="gemini-flash-latest",
     retry_options=types.HttpRetryOptions(attempts=3),
 )
 

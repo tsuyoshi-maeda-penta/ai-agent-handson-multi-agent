@@ -66,16 +66,16 @@ async def format_research_prompt(
     )
     return prompt
 
+model = Gemini(
+    model="gemini-flash-latest",
+    retry_options=types.HttpRetryOptions(attempts=3),
+)
 
 market_research_agent = Agent(
     name="market_research_agent",
-    model=Gemini(
-        model="gemini-flash-latest",
-        retry_options=types.HttpRetryOptions(attempts=3),
-    ),
+    model=model,
     instruction="あなたは優秀な市場リサーチャーです。与えられたプロンプトに従って市場調査を行ってください。",
 )
-
 
 @node
 async def format_generation_prompt(ctx: Context, node_input: str) -> str:
@@ -97,16 +97,11 @@ async def format_generation_prompt(ctx: Context, node_input: str) -> str:
     )
     return prompt
 
-
 idea_generation_agent = Agent(
     name="idea_generation_agent",
-    model=Gemini(
-        model="gemini-flash-latest",
-        retry_options=types.HttpRetryOptions(attempts=3),
-    ),
+    model=model,
     instruction="あなたは革新的な商品企画者です。与えられた市場調査レポートに基づいて素晴らしい新商品のアイデアを提案してください。",
 )
-
 
 @node
 async def format_evaluation_prompt(ctx: Context, node_input: str) -> str:
@@ -137,16 +132,11 @@ async def format_evaluation_prompt(ctx: Context, node_input: str) -> str:
     )
     return prompt
 
-
 idea_evaluation_agent = Agent(
     name="idea_evaluation_agent",
-    model=Gemini(
-        model="gemini-flash-latest",
-        retry_options=types.HttpRetryOptions(attempts=3),
-    ),
+    model=model,
     instruction="あなたは厳格な投資家および商品開発責任者です。提案されたアイデアを採点し、指定されたJSONフォーマットで回答してください。JSON以外のテキストは出力しないでください。",
 )
-
 
 @node
 async def check_evaluation_score(ctx: Context, node_input: str) -> str:
@@ -196,7 +186,6 @@ async def check_evaluation_score(ctx: Context, node_input: str) -> str:
         ctx.state["feedback"] = feedback
         ctx.route = "LOOP"
         return f"LOOPING: Score {score}/100 is below 80. Loop count: {loop_count}.\nFeedback: {feedback}"
-
 
 workflow = Workflow(
     name="product_generator_workflow",

@@ -16,9 +16,14 @@ from google.genai import types
 # 1. 専門実行層 (Specialist Agents)
 # =====================================================================
 
+model = Gemini(
+    model="gemini-flash-latest",
+    retry_options=types.HttpRetryOptions(attempts=3),
+)
+
 # 企業情報調査エージェント (Company Profile Agent)
 company_profile_agent = Agent(
-    model='gemini-2.5-flash',
+    model=model,
     name='CompanyProfileAgent',
     description='企業の概要、主要事業、沿革などの基本データを調査する専門エージェント。',
     instruction="""あなたは企業の基礎情報を調査する専門エージェントです。
@@ -31,7 +36,7 @@ company_profile_agent = Agent(
 
 # 企業ニュース調査エージェント (Company News Agent)
 company_news_agent = Agent(
-    model='gemini-2.5-flash',
+    model=model,
     name='CompanyNewsAgent',
     description='対象企業に関する直近のニュース、トピックス、社会的評価の調査を行う専門エージェント。',
     instruction="""あなたは企業の最新動向およびニュースを追跡する専門エージェントです。
@@ -41,7 +46,7 @@ company_news_agent = Agent(
 
 # ビジネス分析エージェント (Business Analysis Agent)
 business_analysis_agent = Agent(
-    model='gemini-2.5-flash',
+    model=model,
     name='BusinessAnalysisAgent',
     description='競争優位性、市場環境、ビジネスモデルの強み・弱みの定性分析を担当する専門エージェント。',
     instruction="""あなたは企業のビジネス戦略と市場環境を分析する専門エージェントです。
@@ -54,7 +59,7 @@ business_analysis_agent = Agent(
 
 # 財務調査エージェント (Financial Analysis Agent)
 financial_analysis_agent = Agent(
-    model='gemini-2.5-flash',
+    model=model,
     name='FinancialAnalysisAgent',
     description='決算書に基づく収益性、安全性、成長性、キャッシュフロー構造の定量分析を担当する専門エージェント。',
     instruction="""あなたは企業の財務状況を評価する財務分析の専門エージェントです。
@@ -73,7 +78,7 @@ financial_analysis_agent = Agent(
 
 # 調査コーディネーター (Research Coordinator)
 research_coordinator = Agent(
-    model='gemini-2.5-flash',
+    model=model,
     name='ResearchCoordinator',
     description='企業情報およびニュースに関する下位の専門調査エージェントの管理・統合を担当する中間コーディネーター。',
     instruction="""あなたは調査領域の中間コーディネーターです。ルートエージェントから指示された企業について、ファクトベースの情報を集める責務を持ちます。
@@ -85,7 +90,7 @@ research_coordinator = Agent(
 
 # 分析コーディネーター (Analysis Coordinator)
 analysis_coordinator = Agent(
-    model='gemini-2.5-flash',
+    model=model,
     name='AnalysisCoordinator',
     description='ビジネスおよび財務に関する下位の専門分析エージェントの管理・統合を担当する中間コーディネーター。',
     instruction="""あなたは分析領域の中間コーディネーターです。ルートエージェントから指示された企業について、定量・定性の両面から深いインサイトを導き出す責務を持ちます。
@@ -102,7 +107,7 @@ analysis_coordinator = Agent(
 
 # 総合企業分析コーディネーター (Corporate Analysis Coordinator)
 root_agent = Agent(
-    model='gemini-2.5-flash',
+    model=model,
     name='CorporateAnalysisCoordinator',
     description='総合企業分析コーディネーター。ユーザーからのリクエストを受け付け、下位コーディネーターへのタスク割り当て、最終レポートの統合を行います。',
     instruction="""あなたは高度な企業分析エージェントシステムのルートエージェント（総合コーディネーター）です。

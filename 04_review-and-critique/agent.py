@@ -42,14 +42,15 @@ class BlogState(BaseModel):
     is_approved: bool = False
     loop_count: int = 0
 
+model = Gemini(
+    model="gemini-flash-latest",
+    retry_options=types.HttpRetryOptions(attempts=3),
+)
 
 # Parser Agent: Extracts topic and audience from initial query
 parser_agent = Agent(
     name="parser_agent",
-    model=Gemini(
-        model="gemini-2.5-flash",
-        retry_options=types.HttpRetryOptions(attempts=3),
-    ),
+    model=model,
     instruction="""Extract the blog topic and target audience from the user prompt.
 If the prompt doesn't specify a target audience, use "General Developers" as default.""",
     output_schema=StartQueryParse,
@@ -58,10 +59,7 @@ If the prompt doesn't specify a target audience, use "General Developers" as def
 # Writer Agent: Writes and refines the blog post
 writer_agent = Agent(
     name="writer_agent",
-    model=Gemini(
-        model="gemini-2.5-flash",
-        retry_options=types.HttpRetryOptions(attempts=3),
-    ),
+    model=model,
     instruction="""あなたはプロの技術ライターおよびエンジニアです。
 読者が理解しやすく、技術的に正確で、実用的なブログ記事を執筆することがあなたの任務です。
 
@@ -78,10 +76,7 @@ writer_agent = Agent(
 # Reviewer Agent: Evaluates the draft and scores it
 reviewer_agent = Agent(
     name="reviewer_agent",
-    model=Gemini(
-        model="gemini-2.5-flash",
-        retry_options=types.HttpRetryOptions(attempts=3),
-    ),
+    model=model,
     instruction="""あなたは厳格かつ建設的な技術ブログの編集者（査読者）です。
 提出された技術記事を以下の4つの基準（各25点満点、計100点）で評価してください。
 

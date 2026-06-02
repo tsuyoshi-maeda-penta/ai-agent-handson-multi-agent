@@ -33,11 +33,16 @@ os.environ["GOOGLE_CLOUD_PROJECT"] = project_id
 os.environ["GOOGLE_CLOUD_LOCATION"] = "global"
 os.environ["GOOGLE_GENAI_USE_VERTEXAI"] = "True"
 
+model = Gemini(
+    model="gemini-flash-latest",
+    retry_options=types.HttpRetryOptions(attempts=3),
+)
+
 # --- エージェントの定義 ---
 
 creative_agent = Agent(
     name="creative_agent",
-    model=Gemini(model="gemini-flash-latest"),
+    model=model,
     instruction="""
 あなたは一流のデジタルマーケティング・コピーライターです。
 与えられた商材情報とターゲット層 of インサイトを深く分析し、指定されたSNSに最適化された、クリック率（CTR）を高めるキャッチコピーを生成してください。
@@ -47,7 +52,7 @@ creative_agent = Agent(
 
 review_agent = Agent(
     name="review_agent",
-    model=Gemini(model="gemini-flash-latest"),
+    model=model,
     instruction="""
 あなたは厳格な広告クリエイティブディレクターおよびデータサイエンティストです。
 提出されたキャッチコピー案を、以下の基準で100点満点で採点してください。
@@ -71,7 +76,7 @@ JSONフォーマット：
 
 refinement_agent = Agent(
     name="refinement_agent",
-    model=Gemini(model="gemini-flash-latest"),
+    model=model,
     instruction="""
 あなたはプロンプトエンジニアリングの専門家です。
 クリエイティブエージェントが「レビューエージェントからの手厳しいフィードバック」を完全に克服するための、次回の生成用最適化指示（プロンプトの修正・追加分）を構築してください。

@@ -27,6 +27,12 @@ from google.adk.models import Gemini
 from google.adk.workflow import START
 from google.genai import types
 
+# Set up project environment
+_, project_id = google.auth.default()
+os.environ["GOOGLE_CLOUD_PROJECT"] = project_id
+os.environ["GOOGLE_CLOUD_LOCATION"] = "global"
+os.environ["GOOGLE_GENAI_USE_VERTEXAI"] = "True"
+
 class Temperature(BaseModel):
     max: int = Field(..., description="最高気温 (Celsius)")
     min: int = Field(..., description="最低気温 (Celsius)")
@@ -57,14 +63,15 @@ def get_weather_forecast(location: str) -> str:
     else:
         return f"Weather: 晴れのち曇り, Max Temp: 20°C, Min Temp: 14°C, Precipitation Probability: 20% for {location}"
 
+model = Gemini(
+    model="gemini-flash-latest",
+    retry_options=types.HttpRetryOptions(attempts=3),
+)
 
 weather_agent = Agent(
     name="weather_agent",
     description="天気情報アナリスト",
-    model=Gemini(
-        model="gemini-flash-latest",
-        retry_options=types.HttpRetryOptions(attempts=3),
-    ),
+    model=model,
     instruction="""
 あなたは「天気情報アナリスト」です。
 ユーザーから地域名（ロケーション）を受け取り、その地域の天気予報を `get_weather_forecast` ツールを使用して取得してください。
@@ -78,10 +85,7 @@ weather_agent = Agent(
 fashion_agent = Agent(
     name="fashion_agent",
     description="AIパーソナルスタイリスト",
-    model=Gemini(
-        model="gemini-flash-latest",
-        retry_options=types.HttpRetryOptions(attempts=3),
-    ),
+    model=model,
     instruction="""
 あなたは「AIパーソナルスタイリスト」です。
 Weather Agent から受け取った気象データ（JSON形式の WeatherData）に基づき、快適かつファッショナブルな服装を提案してください。

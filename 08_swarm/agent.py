@@ -185,8 +185,10 @@ def escalate_to_human(customer_id: str, complaint_summary: str) -> str:
 # 3. エージェント定義 (エージェント定義 & 階層構造)
 # ==========================================
 
-# 環境変数から使用モデルを取得、デフォルトは高性能な gemini-2.5-flash
-model = os.environ.get("ADK_MODEL", "gemini-2.5-flash")
+model = Gemini(
+    model="gemini-flash-latest",
+    retry_options=types.HttpRetryOptions(attempts=3),
+)
 
 # 4.2 返金・返品専門エージェント (Refund & Return Agent)
 refund_return_agent = Agent(
