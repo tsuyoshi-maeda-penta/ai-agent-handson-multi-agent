@@ -30,7 +30,7 @@ gcloud config set project $GOOGLE_CLOUD_PROJECT
 次のコマンドで、使用するサービスの API の有効化を行います。
 
 ```sh
-gcloud services enable aiplatform.googleapis.com weather.googleapis.com
+gcloud services enable aiplatform.googleapis.com
 ```
 
 ## Antigravity CLI のインストール
