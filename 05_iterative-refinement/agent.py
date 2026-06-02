@@ -25,6 +25,7 @@ from google.adk.apps import App
 from google.adk.models import Gemini
 from google.adk.workflow import node
 from google.adk.agents.context import Context
+from google.genai import types
 
 logger = logging.getLogger(__name__)
 
