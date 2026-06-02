@@ -139,10 +139,10 @@ Antigravity CLI requires permission to read, edit, and execute files here.
   No, exit
 ```
 
-ハンズオンではスムーズに実装を進めるため、パーミッション設定をデフォルトの「レビューが必要な設定」から「自動許可の設定」に変更します。パーミッション設定は `/permission` スラッシュコマンドを実行します。
+ハンズオンではスムーズに実装を進めるため、パーミッション設定をデフォルトの「レビューが必要な設定」から「自動許可の設定」に変更します。パーミッション設定は `/permissions` スラッシュコマンドを実行します。
 
 ```
-/permission
+/permissions
 ```
 
 設定を `always-proceed` に変更します。
@@ -229,6 +229,8 @@ Workspace skills · Workspace config
   google-agents-cli-workflow: This skill should be used when the user wants to "develop an agent", "build an agent using ADK", "run the agent locally", "debug agent code", ...
 ```
 
+スキルを確認したら `Esc` キーを押し、スキル一覧を閉じます。
+
 Antigravity CLI を終了します。スラッシュコマンド `/exit` で終了できます。
 
 ```
@@ -250,10 +252,48 @@ agy
 次のプロンプトを実行します。
 
 ```
-agents-cli を使って `multi-agent` という名前の AI エージェントの Scaffold を作成してください。ADK のバージョンは 2.0 を指定してください。
+agents-cli の Scaffold 作成 Skill を使って `multi-agent` という名前の AI エージェントを作成してください。ADK のバージョンは 2.0
+  を指定してください。
+```
+
+次のような質問があるので、デフォルトの設定 (標準的なADKエージェント) を選びます。
+
+```
+Question 1/2: 作成する `multi-agent` エージェントのアーキテクチャ（テンプレート）を選択します。
+
+> 1. (Recommended) 標準的なADKエージェント (adk)
+  2. RAGエージェント (agentic_rag)
+  3. Agent-to-Agent協調エージェント (adk_a2a)
+  4. Write-in...
+```
+
+デプロイ方法についての質問は、「プロトタイプとして作成」を選択します。
+
+```
+Question 2/2: デプロイ方法の優先事項を選択してください。
+
+> 1. (Recommended) プロトタイプとして作成（ローカル開発優先、インフラ設定なし）
+  2. Agent Runtime (Gemini Enterprise Agent Platform) へのデプロイ設定を含める
+  3. Cloud Run (コンテナ) へのデプロイ設定を含める
+  4. GKE へのデプロイ設定を含める
+  5. Write-in...
+```
+
+最後に作成プランが表示され、作成確認が問われます。「進めてください」と入力し、作成を続行します。
+
+```
+こちらの仕様（スペック）で進めてよろしければ、承認（「進めてください」などのご返答）をお願いいたします。承認をいただいた後、直ちに agents-cli scaffold create  によるプロジェクト作成とADK 2.0へのバージョン指定の適用を開始いたします。
 ```
 
 数分後、作成が完了します。試しに `agents-cli playground` で実行してみましょう。
+
+まず Antigravity CLI をスラッシュコマンド `/exit` で終了します。
+
+```
+/exit
+```
+
+その後、以下のコマンドを実行します。
 
 ```sh
 cd multi-agent
