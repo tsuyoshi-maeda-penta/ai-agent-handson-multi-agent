@@ -279,6 +279,12 @@ INFO:     Uvicorn running on http://127.0.0.1:8080 (Press CTRL+C to quit)
 
 チャット画面で何か入力し、正常に返答が得られることを確認しましょう。
 
+「API キーが不足している」旨のエラーが表示される場合は、次のコマンドを実行し `.env` を作成するようにしてください。
+
+```sh
+echo "GOOGLE_GENAI_USE_VERTEXAI=True" >> .env
+```
+
 最後に、Playground を起動したターミナルで `Ctrl` + `C` を押し、Playground を終了します。
 
 ### AI エージェントがうまく作成できないときは…

@@ -46,7 +46,7 @@ def get_weather_forecast(location: str) -> str:
     Returns:
         A string containing weather forecast details (weather, temperature range, precipitation probability).
     """
-    loc_lower = location.lower()
+    loc = location.lower()
 
     if "東京" in loc or "tokyo" in loc:
         return "Weather: 雨のち曇り, Max Temp: 18°C, Min Temp: 12°C, Precipitation Probability: 70%"
