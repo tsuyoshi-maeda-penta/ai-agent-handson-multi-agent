@@ -247,22 +247,6 @@ async def format_coordinator_prompt(ctx: Context, specialist_output: str ) -> st
     return prompt
 
 
-@node
-async def format_coordinator_direct_prompt(ctx: Context, node_input: str) -> str:
-    """Formats the prompt for the coordinator when no specialist was needed (OTHER)."""
-    query = ctx.state.get("query", "")
-    
-    prompt = (
-        f"ユーザーからの問い合わせ:\n"
-        f"{query}\n\n"
-        f"指示:\n"
-        f"この問い合わせは特定の専門カテゴリに分類されなかったか、一般的な挨拶・質問です。\n"
-        f"あなた（OmniSupport Coordinator）が、直接親切かつ丁寧な言葉遣いで対応してください。\n"
-        f"もし複雑なクレームや特殊な要望が含まれている場合は、必要に応じて人間のオペレーターへの引き継ぎを提案してください。"
-    )
-    return prompt
-
-
 # --- 5. Workflow Graph Definition (Coordinator/Router Pattern) ---
 
 coordinator_workflow = Workflow(
@@ -281,10 +265,9 @@ coordinator_workflow = Workflow(
                 "OTHER": format_coordinator_direct_prompt,
             },
         ),
-        (order_specialist, format_coordinator_prompt),
-        (return_specialist, format_coordinator_prompt),
-        (product_specialist, format_coordinator_prompt),
-        (format_coordinator_prompt, coordinator_agent),
+        (order_specialist, coordinator_agent),
+        (return_specialist, coordinator_agent),
+        (product_specialist, coordinator_agent),
         (format_coordinator_direct_prompt, coordinator_agent),
     ],
 )
