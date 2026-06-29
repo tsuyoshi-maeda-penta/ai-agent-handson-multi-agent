@@ -1,0 +1,22 @@
+[project]
+name = "ai-agent-handson-multi-agent"
+version = "0.1.0"
+description = "Root ADK launcher for the hands-on multi-agent examples"
+authors = [
+    {name = "Your Name", email = "your@email.com"},
+]
+requires-python = ">=3.11,<3.14"
+dependencies = [
+    "google-adk>=2.0.0,<3.0.0",
+    "google-cloud-aiplatform[evaluation,agent-engines]>=1.130.0",
+    "google-cloud-logging>=3.12.0,<4.0.0",
+    "protobuf>=6.31.1,<7.0.0",
+    "python-dotenv>=1.0.0",
+    "google-auth>=2.0.0",
+    "opentelemetry-instrumentation-google-genai>=0.1.0,<1.0.0",
+    "gcsfs>=2024.11.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
